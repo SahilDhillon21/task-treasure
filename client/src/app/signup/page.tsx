@@ -1,17 +1,34 @@
+"use client"
+
 import Link from "next/link";
-
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Sign Up Page | Free Next.js Template for Startup and SaaS",
-  description: "This is Sign Up Page for Startup Nextjs Template",
-  // other metadata
-};
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
+import { validationSchema } from "./validationSchema";
+import ErrorMessage from "@/components/ErrorMessage";
+import { useState } from "react";
 
 const SignupPage = () => {
+  const [messsage, setMessage] = useState('')
+
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
+  const onSignupFormSubmit = async (data: any) => {
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/signup/", data);
+      console.log("User registered successfully:", response.data);
+      setMessage(response.data)
+    } catch (error) {
+      console.error("Error registering user:", error);
+    }
+  };
+
   return (
     <>
       <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
+        {messsage}
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
@@ -80,21 +97,23 @@ const SignupPage = () => {
                   </p>
                   <span className="hidden h-[1px] w-full max-w-[60px] bg-body-color/50 sm:block"></span>
                 </div>
-                <form>
+                <form onSubmit={handleSubmit(onSignupFormSubmit)}>
                   <div className="mb-8">
                     <label
                       htmlFor="name"
                       className="mb-3 block text-sm text-dark dark:text-white"
                     >
                       {" "}
-                      Full Name{" "}
+                      Username{" "}
                     </label>
                     <input
+                      {...register('username')}
                       type="text"
-                      name="name"
-                      placeholder="Enter your full name"
+                      name="username"
+                      placeholder="Enter your username"
                       className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
                     />
+                    <ErrorMessage message={errors.username?.message} />
                   </div>
                   <div className="mb-8">
                     <label
@@ -102,14 +121,16 @@ const SignupPage = () => {
                       className="mb-3 block text-sm text-dark dark:text-white"
                     >
                       {" "}
-                      Work Email{" "}
+                      Email{" "}
                     </label>
                     <input
+                      {...register('email')}
                       type="email"
                       name="email"
                       placeholder="Enter your Email"
                       className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
                     />
+                    <ErrorMessage message={errors.email?.message} />
                   </div>
                   <div className="mb-8">
                     <label
@@ -117,14 +138,33 @@ const SignupPage = () => {
                       className="mb-3 block text-sm text-dark dark:text-white"
                     >
                       {" "}
-                      Your Password{" "}
+                      Enter Password{" "}
                     </label>
                     <input
+                      {...register('password')}
                       type="password"
                       name="password"
                       placeholder="Enter your Password"
                       className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
                     />
+                    <ErrorMessage message={errors.password?.message} />
+                  </div>
+                  <div className="mb-8">
+                    <label
+                      htmlFor="password"
+                      className="mb-3 block text-sm text-dark dark:text-white"
+                    >
+                      {" "}
+                      Confirm Password{" "}
+                    </label>
+                    <input
+                      {...register('password2')}
+                      type="password"
+                      name="password2"
+                      placeholder="Enter your Password"
+                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
+                    />
+                    <ErrorMessage message={errors.password2?.message} />
                   </div>
                   <div className="mb-8 flex">
                     <label
@@ -171,7 +211,7 @@ const SignupPage = () => {
                     </label>
                   </div>
                   <div className="mb-6">
-                    <button className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
+                    <button type="submit" className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
                       Sign up
                     </button>
                   </div>
