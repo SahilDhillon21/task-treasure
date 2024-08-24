@@ -1,23 +1,26 @@
 "use client"
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { sidebarLinks } from "./sidebarLinks";
+import VerticalTabs from "@/components/UserCenter"
 
 const SponsorPage = () => {
-  return (
-    <>
-      
-
-      <section className="pb-[120px] pt-28">
-        <div className="container ">
+    const router = useRouter();
+    const pathname = usePathname();
+    return (
+        <>
 
 
-          <div className="-mx-4 flex flex-wrap">
-            <div className="w-full px-4">
-              <h1>Hi sponsor</h1>
-            </div>
-          </div>
-        </div>
-      </section >
-    </>
-  );
+            <section className="pb-[140px] pt-28">
+                <div className="container">
+
+                    <VerticalTabs />
+
+                </div>
+            </section >
+        </>
+    );
 };
 
 export default SponsorPage;
