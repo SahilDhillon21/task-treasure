@@ -1,23 +1,7 @@
 "use client"
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
-import { validationSchema } from "./validationSchema";
-import { useEffect, useState } from "react";
 
 const SignupPage = () => {
-  const [messsage, setMessage] = useState('')
-  const { data: session } = useSession();
-
-  useEffect(() => {
-    if (session) {
-      setMessage(`Signed in as ${session.user.email}`)
-    } else {
-      setMessage('Not signed in')
-    }
-  }, [session])
-
 
   return (
     <>
@@ -27,7 +11,6 @@ const SignupPage = () => {
             <div className="w-full px-4">
               <div className="shadow-three mx-auto max-w-[500px] rounded bg-white px-6 py-10 dark:bg-dark sm:p-[60px]">
                 <h3 className="mb-3 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
-                  {messsage} <hr /> <br />
 
                   Sign in or create your account
                 </h3>
