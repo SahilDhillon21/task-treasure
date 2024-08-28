@@ -161,12 +161,13 @@ const Header = () => {
                         src={session.user.image}
                         alt={session.user.name}
                         className="h-9 w-9 rounded-sm"
-                        
                       />
                     )}
 
                     <span className="text-base font-medium text-black dark:text-white">
-                      {session.user.name}
+                      <Link href="/user-center">
+                        {session.user.name}
+                      </Link>
                     </span>
 
                     <button

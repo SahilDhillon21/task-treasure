@@ -1,29 +1,54 @@
+"use client"
+
 import React, { useState } from 'react';
 import Button from '../Common/Button';
 import UserProfileDetails from './profile';
+import Sponsor from './sponsor';
 
 type Tab = {
     id: string;
     label: string;
-    content: React.ReactNode;
 };
 
 const tabs: Tab[] = [
-    { id: 'profile', label: 'Profile', content: < UserProfileDetails /> },
-    { id: 'settings', label: 'Settings', content: <p>This is the Settings content.</p> },
-    { id: 'notifications', label: 'Notifications', content: <p>This is the Notifications content.</p> },
-    { id: 'security', label: 'Security', content: <p>This is the Security content.</p> },
-    { id: 'help', label: 'Help', content: <p>This is the Help content.</p> }
+    { id: 'profile', label: 'Profile' },
+    { id: 'sponsor', label: 'Sponsor' },
+    { id: 'settings', label: 'Settings' },
+    { id: 'notifications', label: 'Notifications' },
+    { id: 'security', label: 'Security' },
+    { id: 'help', label: 'Help' }
 ];
 
-export default function VerticalTabs() {
+
+export default function UserPage({ user }) {
+    console.log(user)
     const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
 
     const handleTabClick = (tabId: string) => {
         setActiveTab(tabId);
     };
 
-    const activeTabContent = tabs.find(tab => tab.id === activeTab)?.content;
+    
+
+    const getActiveTabContent = () => {
+        switch (activeTab) {
+            case 'profile':
+                return <UserProfileDetails user={user} />;
+            case 'sponsor':
+                return <Sponsor user={user} />;
+            case 'settings':
+                return <p>This is the Settings content.</p>;
+            case 'notifications':
+                return <p>This is the Notifications content.</p>;
+            case 'security':
+                return <p>This is the Security content.</p>;
+            case 'help':
+                return <p>This is the Help content.</p>;
+            default:
+                return null;
+        }
+    };
+
 
     return (
         <div className="md:flex">
@@ -41,9 +66,9 @@ export default function VerticalTabs() {
             </ul>
             <div className="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
                 <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                    {tabs.find(tab => tab.id === activeTab)?.label} 
+                    {tabs.find(tab => tab.id === activeTab)?.label}
                 </h1>
-                {activeTabContent}
+                {getActiveTabContent()}
             </div>
         </div>
     );
