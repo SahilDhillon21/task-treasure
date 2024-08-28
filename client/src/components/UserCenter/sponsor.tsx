@@ -1,11 +1,16 @@
 "use client"
 
-import prisma from "@/lib/prisma";
-import axios from "axios";
-import { getSession } from "next-auth/react";
+import { User } from "@prisma/client";
 
-export default function Sponsor({ user }) {
-    return(
-        <h1>Sponsor page</h1>
+export default function Sponsor({ user }: { user: User }) {
+    return (
+
+        <>
+            
+            <h1>
+                {!user.hasBrand && 'No brand'}
+            </h1>
+
+        </>
     )
 }
