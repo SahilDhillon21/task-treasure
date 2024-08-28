@@ -178,7 +178,7 @@ const Header = () => {
                   </div>
                 ) : (
                   <Link
-                    href="/signup"
+                    href="/signin"
                     className="flex items-center justify-center px-6 py-2 text-sm font-semibold text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 transition-transform transform hover:scale-105 active:scale-95"
                   >
                     Sign In

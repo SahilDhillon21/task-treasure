@@ -18,4 +18,8 @@ model User {
   name  String
   email String  @unique
   avatar String @default("https://res.cloudinary.com/dbju1cqof/image/upload/v1724329120/task-treasure/avatar/default-icons8-character-500_xptyis.png")
+  credit     Int      @default(0) 
+  hasBrand Boolean @default(false)
+  brandName  String?  
+  brandDescription String?
 }

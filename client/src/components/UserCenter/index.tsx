@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Button from '../Common/Button';
+import UserProfileDetails from './profile';
 
 type Tab = {
     id: string;
@@ -8,7 +9,7 @@ type Tab = {
 };
 
 const tabs: Tab[] = [
-    { id: 'profile', label: 'Profile', content: <><Button label='dyanamic'/></> },
+    { id: 'profile', label: 'Profile', content: < UserProfileDetails /> },
     { id: 'settings', label: 'Settings', content: <p>This is the Settings content.</p> },
     { id: 'notifications', label: 'Notifications', content: <p>This is the Notifications content.</p> },
     { id: 'security', label: 'Security', content: <p>This is the Security content.</p> },
@@ -39,9 +40,9 @@ export default function VerticalTabs() {
                 ))}
             </ul>
             <div className="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-                    {tabs.find(tab => tab.id === activeTab)?.label} Tab
-                </h3>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                    {tabs.find(tab => tab.id === activeTab)?.label} 
+                </h1>
                 {activeTabContent}
             </div>
         </div>
