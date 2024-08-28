@@ -14,12 +14,36 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  name  String
-  email String  @unique
-  avatar String @default("https://res.cloudinary.com/dbju1cqof/image/upload/v1724329120/task-treasure/avatar/default-icons8-character-500_xptyis.png")
-  credit     Int      @default(0) 
-  hasBrand Boolean @default(false)
-  brandName  String?  
-  brandDescription String?
+  id                Int      @id @default(autoincrement())
+  name              String
+  email             String   @unique
+  avatar            String   @default("https://res.cloudinary.com/dbju1cqof/image/upload/v1724329120/task-treasure/avatar/default-icons8-character-500_xptyis.png")
+  redeemableCredits Int      @default(0)
+  sponsor           Sponsor? @relation(fields: [sponsorId], references: [id])
+  sponsorId         Int?     @unique
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Sponsor {
+  id              Int      @id @default(autoincrement())
+  name            String
+  description     String?
+  logo            String?
+  taskOnlyCredits Int      @default(0)
+  user            User?    @relation
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model YoutubeTask {
+  id              Int      @id @default(autoincrement())
+  link            String
+  viewTarget      Int
+  viewDuration    Int
+  likeTarget      Int?
+  commentTarget   Int?
+  subscribeTarget Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
