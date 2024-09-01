@@ -160,7 +160,9 @@ const Header = () => {
                       <img
                         src={session.user.image}
                         alt={session.user.name}
-                        className="h-9 w-9 rounded-sm"
+                        className="rounded-sm"
+                        height={35}
+                        width={35}
                       />
                     )}
 

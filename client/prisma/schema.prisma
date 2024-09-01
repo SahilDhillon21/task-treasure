@@ -14,30 +14,69 @@ datasource db {
 }
 
 model User {
-  id                Int      @id @default(autoincrement())
-  name              String
-  email             String   @unique
-  avatar            String   @default("https://res.cloudinary.com/dbju1cqof/image/upload/v1724329120/task-treasure/avatar/default-icons8-character-500_xptyis.png")
-  redeemableCredits Int      @default(0)
-  sponsor           Sponsor? @relation(fields: [sponsorId], references: [id])
-  sponsorId         Int?     @unique
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id                 Int                      @id @default(autoincrement())
+  name               String
+  email              String                   @unique
+  avatar             String                   @default("https://res.cloudinary.com/dbju1cqof/image/upload/v1724329120/task-treasure/avatar/default-icons8-character-500_xptyis.png")
+  redeemableCredits  Int                      @default(0)
+  sponsor            Sponsor?
+  completedCampaigns UserCampaignCompletion[]
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+}
+
+model UserCampaignCompletion {
+  id          Int      @id @default(autoincrement())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  campaign    Campaign @relation(fields: [campaignId], references: [id])
+  campaignId  Int
+  completedAt DateTime @default(now())
+  rewardPaid  Int
+  status      String // e.g., "completed", "pending_review", "rejected"
+
+  @@unique([userId, campaignId])
 }
 
 model Sponsor {
-  id              Int      @id @default(autoincrement())
+  id              Int        @id @default(autoincrement())
   name            String
   description     String?
   logo            String?
-  taskOnlyCredits Int      @default(0)
-  user            User?    @relation
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  taskOnlyCredits Int        @default(0)
+  user            User       @relation(fields: [userId], references: [id])
+  userId          Int        @unique
+  campaigns       Campaign[]
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
 }
 
-model YoutubeTask {
+model Campaign {
+  id                     Int                      @id @default(autoincrement())
+  type                   String
+  sponsor                Sponsor                  @relation(fields: [sponsorId], references: [id])
+  sponsorId              Int
+  reward                 Int
+  youtubeCampaign        YoutubeCampaign?
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  UserCampaignCompletion UserCampaignCompletion[]
+  InstagramCampaign      InstagramCampaign?
+}
+
+model InstagramCampaign {
   id              Int      @id @default(autoincrement())
+  campaign        Campaign @relation(fields: [campaignId], references: [id])
+  campaignId      Int      @unique
+  hashtagToUse    String
+  targetFollowers Int
+}
+
+model YoutubeCampaign {
+  id              Int      @id @default(autoincrement())
+  campaign        Campaign @relation(fields: [campaignId], references: [id])
+  campaignId      Int      @unique
+  reward          Int
   link            String
   viewTarget      Int
   viewDuration    Int

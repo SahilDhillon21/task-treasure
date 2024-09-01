@@ -21,14 +21,13 @@ const tabs: Tab[] = [
 
 
 export default function UserPage({ user }) {
-    console.log(user)
     const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
 
     const handleTabClick = (tabId: string) => {
         setActiveTab(tabId);
     };
 
-    
+
 
     const getActiveTabContent = () => {
         switch (activeTab) {

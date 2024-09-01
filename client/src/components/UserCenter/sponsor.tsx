@@ -6,7 +6,7 @@ import axios from "axios";
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-type SponsorForm = {
+export type SponsorForm = {
     brandName: string,
     brandDescription: string
 }
@@ -16,13 +16,23 @@ export default function Sponsor({ user }: { user: User }) {
 
     const [open, setOpen] = useState(false);
 
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+
     const onSponsorFormSubmit = async (data: SponsorForm) => {
         const brandName = data.brandName
 
         if (!brandName || brandName.length < 2) {
+            console.log('Brand name must be at least 2 characters')
             return
         }
 
+        data['userId'] = user.id
 
         try {
             const res = await axios.post('/api/createSponsorAccount', data)
@@ -38,7 +48,7 @@ export default function Sponsor({ user }: { user: User }) {
         <>
 
             <h1>
-                {!user.hasBrand &&
+                {!user.email &&
 
                     <div className=" bg-gray-900 flex items-center justify-center">
                         <div className="bg-gray-800 p-8 w-full max-w-md">
@@ -91,11 +101,12 @@ export default function Sponsor({ user }: { user: User }) {
                 }
             </h1>
 
-            <Snackbar open={open} autoHideDuration={4000} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+            <Snackbar open={open} onClose={handleClose} autoHideDuration={4000} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
                 <Alert
                     severity="success"
                     variant="filled"
                     sx={{ width: '100%' }}
+
                 >
                     Account created successfully!
                 </Alert>
