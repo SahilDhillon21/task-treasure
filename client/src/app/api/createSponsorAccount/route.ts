@@ -3,7 +3,7 @@ import { NextResponse, NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {
     const data = await req.json()
-    const { brandName, brandDescription, userId } = data;
+    const { brandName, brandDescription, id } = data;
 
     if (!brandName || brandName.length < 2) {
         return NextResponse.json({ error: 'Brand name is required and must be at least 2 characters long.' }, { status: 400 });
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
                 description: brandDescription,
                 user: {
                     connect: {
-                        id: userId,
+                        id: id,
                     },
                 },
             },

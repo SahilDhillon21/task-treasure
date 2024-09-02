@@ -1,25 +1,45 @@
 'use client';
 
-import * as React from 'react';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { User } from '@prisma/client';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { Bars } from 'react-loader-spinner';
 
 type SponsorForm = {
     brandName: string,
     brandDescription: string
 }
 
-export default function SponsorAccordion({ name }: { name: string }) {
+export default function SponsorAccordion({ user }: { user: User }) {
+    const [loading, setLoading] = useState(false)
+
+    const router = useRouter();
+
     const { register, handleSubmit, formState: { errors } } = useForm<SponsorForm>();
 
     const onSponsorFormSubmit: SubmitHandler<SponsorForm> = async (data) => {
-        // Handle form submission, e.g., sending data to an API
-        console.log('Form submitted:', data);
+        setLoading(true)
+
+        const reqData = {
+            ...user,
+            brandName: data.brandName,
+            brandDescription: data.brandDescription
+        }
+
+        try {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            const res = await axios.post('/api/createSponsorAccount', reqData)
+            alert(res)
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+            router.push('/sponsor_dashboard')
+        }
+
+
     };
 
     return (
@@ -39,7 +59,7 @@ export default function SponsorAccordion({ name }: { name: string }) {
                                 message: 'Brand name must be at least 2 characters long'
                             }
                         })}
-                        defaultValue={name}
+                        defaultValue={user.name}
                         placeholder="Enter your brand name"
                         className="mt-1 block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
@@ -62,8 +82,10 @@ export default function SponsorAccordion({ name }: { name: string }) {
                 <button
                     type="submit"
                     className="w-full px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    disabled={loading}
                 >
-                    Create
+                    {loading ? <Bars wrapperClass='flex justify-center items-center' color='white' height={20} /> : 'Create'}
+
                 </button>
                 <h3 className="text-center text-orange-500">Get 200 credits for free on account creation!</h3>
             </form>

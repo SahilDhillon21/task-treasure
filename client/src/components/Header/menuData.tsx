@@ -89,7 +89,7 @@ const menuData: Menu[] = [
   {
     id: 6,
     title: 'Sponsor tasks!',
-    path: '/sponsor',
+    path: '/sponsor_dashboard',
     newTab: false,
   }
 ];
